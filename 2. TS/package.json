@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start": "tsc -w",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -13,8 +15,10 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^25.3.5",
     "eslint": "^10.0.2",
     "globals": "^17.4.0",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1"
   },
   "prettier": {

@@ -1,13 +1,13 @@
-import { Company } from './company.js';
-import { Product } from './products.js';
+import { Company } from './company.ts';
+import { Product } from './products.ts';
 
 export class Invoice {
-  // Métodos estáticos porque siempre serán gestionados por la Compañia
+  // Métodos estáticos porque siempre serán gestionados por la Compañía
   static #brand = new Company(
     'La Palmerita de Morata',
+    'Y8906521M',
     'C/ Abtao 8, Madrid',
     '667788991',
-    'Y8906521M',
   );
   static #lastID = 0;
   static #getID() {

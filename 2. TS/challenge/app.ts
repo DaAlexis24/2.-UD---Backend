@@ -1,16 +1,22 @@
-import { Company } from "./company.js";
-import { Invoice } from "./invoice.js";
+import { Company } from './company.ts';
+import { Invoice } from './invoice.ts';
+import { Product } from './products.ts';
 
-const myCompany = new Company(
-  "La Palmerita de Morata",
-  "C/ Abtao 8, Madrid",
-  "667788991",
-  "Y8906521M",
+const client1 = new Company('5656565843D', 'Acme');
+const apples = new Product('123', 'apples', 4);
+const invoice1 = new Invoice(client1, apples, 20, 1.04);
+
+const invoice2 = new Invoice(
+  new Company('6567565843D', 'CAS'),
+  new Product('145', 'mobile', 400),
+  1,
 );
 
-const i1 = new Invoice(
-  myCompany,
-  new Company("Acme", "C/ Geronimo Macabeo 78", "654321098", "Z4569955B"),
-);
+invoice2.addProduct(apples, 1000);
 
-i1.printInvoice()
+const invoice3 = new Invoice(invoice2.client, apples, 25, 1.04);
+
+console.log(invoice1, invoice2);
+invoice1.printInvoice();
+invoice2.printInvoice();
+invoice3.printInvoice();

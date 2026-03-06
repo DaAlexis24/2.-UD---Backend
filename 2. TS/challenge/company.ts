@@ -30,4 +30,4 @@ export class Company {
   }
 }
 
-new Company('Pepa', 'EteSech');
+// new Company('Pepa', 'EteSech');
