@@ -1,5 +1,5 @@
-import { Company } from './company.ts';
-import { Product } from './products.ts';
+import { Company } from './company.js';
+import { Product } from './products.js';
 
 export class Invoice {
   // Métodos estáticos porque siempre serán gestionados por la Compañía

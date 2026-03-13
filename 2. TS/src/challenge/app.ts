@@ -1,6 +1,6 @@
-import { Company } from './company.ts';
-import { Invoice } from './invoice.ts';
-import { Product } from './products.ts';
+import { Company } from './company.js';
+import { Invoice } from './invoice.js';
+import { Product } from './products.js';
 
 const client1 = new Company('5656565843D', 'Acme');
 const apples = new Product('123', 'apples', 4);
