@@ -28,6 +28,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded());
 
+// Para controlar los ficheros estáticos del servidor
+app.use(express.static('public'));
+
 app.get('/', (_req, res) => {
   res.send('Hello World!');
   return;
