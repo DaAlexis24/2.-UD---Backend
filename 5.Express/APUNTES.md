@@ -83,6 +83,7 @@ export const errorHandler = (
 
 - JSON: Nos devuelve un JSON parseado.
 - Urlencoded: Esto sirve para codificar las URL y las query params. Tiene varias condiciones
+- Static: Cada vez que el servidor haga una petición, va a jalar los ficheros que estén en la carpeta public, generalmente.
 
 ## CORS
 
