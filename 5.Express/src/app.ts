@@ -2,16 +2,18 @@ import debug from 'debug';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import { errorHandler } from './middleware/error-hanlder.ts';
-import { HttpError } from './errors/http-errors.ts';
-
-// Nuestro logger
-// import { customLogger } from './middleware/custom-logger.ts';
+import { errorHandler } from './middleware/error-handler.ts';
+import { customHeaders } from './middleware/customs.ts';
+import notesRouter from './router/notes.ts';
 
 const log = debug('Express-App:app');
 
 export const app = express();
+// Nos ayuda a deshabilitar cabeceras
+app.disable('x-powered-by');
 log('Create App');
+
+app.use(customHeaders('ElDiavlo'));
 
 // app.use(customLogger());
 
@@ -36,11 +38,6 @@ app.get('/', (_req, res) => {
   return;
 });
 
-app.get('/patata', (_req, res, next) => {
-  next(new HttpError(401, 'Unauthorized', 'Patatas not allowed'));
-  return;
-});
-
 app.post('/', (req, res) => {
   log(req.body);
   res.statusCode = 201;
@@ -48,14 +45,20 @@ app.post('/', (req, res) => {
   return;
 });
 
-app.get('/api', (req, res) => {
+app.get('/api', (_req, res) => {
+  res.setHeader('X-owner', 'ElHueso');
   res.send('API REST');
   return;
 });
 
-app.get('/api/notes', (req, res) => {
-  const notes = [{ id: 1 }, { id: 2 }];
-  res.json(notes);
+app.use('/api/notes', notesRouter);
+
+app.use((_req, res) => {
+  res.statusCode = 404;
+  res.statusMessage = 'Not Found';
+  res.json({
+    message: 'Resource Not Found',
+  });
   return;
 });
 

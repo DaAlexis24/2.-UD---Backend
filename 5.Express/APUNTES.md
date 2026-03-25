@@ -54,7 +54,7 @@ Son High Order Function que se retornan por si mismos, ya que así les podemos p
 
 ### Errores
 
-Cuando el middleware acepta 4 parámetros, suele ser un manejador de errores. Por convenio, siempre se tiene que declarar los errores al inicio.
+Cuando el middleware acepta 4 parámetros, suele ser un manejador de errores. Por convenio, siempre se tiene que declarar los errores al inicio, ya que es una metodología que impulsa Node **errors first**, para así no olvidarnos de ellos y gestionarlos de manera adecuada.
 
 ```ts
 export const errorHandler = (
@@ -98,3 +98,67 @@ Al ser un middleware, le podemos dar parámetros para configurar los requerimien
 Creamos una carpeta llamada **errors** para poder crear ficheros que nos permita gestionar nuestros errores. Estas suelen ser clases que heredan de la clase nativa Error.
 
 Tenemos que conocer correctamente todos los errores de la web, para así poder elegir el correcto en cada caso
+
+## Eventos del servidor
+
+Levantamos un servidor en Node usando la función **createServer** del módulo nativo de Node **node:http**. Este tiene dos propiedades importantes:
+
+- listen: Oye los puertos para levantar el servidor.
+- on: Permite levantar el servidor en una dirección y también recibe handlers.
+
+## Routes de Express
+
+Es una función nativa de Express que nos devuelve un objeto con muchas propiedades para enrutar y controlar los endpoints de la API que estamos creando.
+
+## Validación
+
+Nos sirve para poder determinar que los datos y o entidades que recibo sean los correctos.
+
+Contamos con múltiples librerías, pero vamos a decantarnos por [Zod](https://www.npmjs.com/package/zod). Al ser hecho en TS, no necesitamos instalarle tipos aparte.
+
+### Zod
+
+Librería super útil con la cual definimos esquemas para poder controlar los datos que nos ingresan. Se hacer de la siguiente manera:
+
+```ts
+import * as z from 'zod';
+
+const EnvSchema = z.object({
+  PORT: z.coerce.number(),
+  NODE_ENV: z.enum(['dev', 'prod', 'test']).default('dev'),
+  DEBUG: z.string(),
+});
+```
+
+Para realizar validaciones usamos el método **parse** para realizar un try/catch, y de esa manera manejamos los errores.
+
+```ts
+// Objeto a validar
+const x = {};
+
+try {
+  const r = EnvSchema.parse(x); // throw Error
+  console.log(r);
+} catch (error) {
+  console.log(error as ZodError);
+}
+```
+
+> También contamos con el método **safeParse**, la diferencia es que no dispara errores, si no que si el objeto a analizar no se adecúa al esquema, lo convierte en undefined: `EnvSchema.safeParse(x);`
+
+Podemos generar tipos desde Zod usando el método infer, de esta manera agilizamos la codificación si requerimos crear un tipo en base de nuestra validación
+
+```ts
+export type Env = z.infer<typeof EnvSchema>;
+```
+
+## Mejoras en la App
+
+Nuevas carpetas:
+
+- Data: Donde guardamos el o los ficheros que recogerá u otorgará la información a la aplicación
+- Types: Tipos orientados a la programación de la aplicación
+- Schemas/Models/Entities: Tipos orientados a la lógica empresarial
+- Services: Procesos orientados a ejecutar la lógica empresarial
+
+### Services
