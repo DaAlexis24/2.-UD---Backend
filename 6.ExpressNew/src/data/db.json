@@ -1,0 +1,38 @@
+{
+    "notes": [
+        {
+            "id": "1",
+            "content": "Primera nota"
+        },
+        {
+            "id": "2",
+            "content": "Segunda nota"
+        },
+        {
+            "content": "Nota creada",
+            "id": "df10700f-18ae-41ea-9e8e-16583023b8db",
+            "owner": "Pepe"
+        },
+        {
+            "content": "Esto es una prueba",
+            "owner": "La LC de Baca",
+            "id": "56a6cef4-06d3-49dd-abd7-cdd043cf7286"
+        },
+        {
+            "content": "Que rica la mamita de Marcelo Mori, DNI 12121",
+            "owner": "Yo ps",
+            "id": "6fb3a642-11ab-4abb-b6f2-547e3a2a00f4"
+        },
+        {
+            "content": "La voy a papear",
+            "owner": "Mesias Guevara",
+            "id": "9fa0bf02-9514-469e-a3e8-e1907046f1ce"
+        },
+        {
+            "content": "Nieto es mi Neto",
+            "owner": "Yo ctmre",
+            "id": "810e0758-135d-4b55-bf27-2736da144594"
+        }
+    ],
+    "users": []
+}
