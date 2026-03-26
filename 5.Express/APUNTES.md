@@ -161,4 +161,14 @@ Nuevas carpetas:
 - Schemas/Models/Entities: Tipos orientados a la lógica empresarial
 - Services: Procesos orientados a ejecutar la lógica empresarial
 
-### Services
+## DTO
+
+Es un tipo de objeto que recibe datos de forma externa, de esta manera se pueden guardar en un API.
+
+Nos podemos apoyar en las Utility Types de TS para poder seleccionar los datos que queremos guardar, hasta lo podemos guardar como un tipo.
+
+Podemos crear DTOs para la creación de ingresos, modificación de registros, etc.
+
+```ts
+export type NoteDTO = Omit<Note, 'id'>;
+```

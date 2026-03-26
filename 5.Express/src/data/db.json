@@ -1,18 +1,27 @@
 {
-  "notes": [
-    {
-      "id": "1",
-      "content": "Primera nota"
-    },
-    {
-      "id": "2",
-      "content": "Segunda nota"
-    },
-    {
-      "content": "Nota creada",
-      "id": "df10700f-18ae-41ea-9e8e-16583023b8db",
-      "owner": "Pepe"
-    }
-  ],
-  "users": []
+    "notes": [
+        {
+            "id": "1",
+            "content": "Primera nota"
+        },
+        {
+            "id": "2",
+            "content": "Segunda nota"
+        },
+        {
+            "content": "Nota creada",
+            "id": "df10700f-18ae-41ea-9e8e-16583023b8db",
+            "owner": "Pepe"
+        },
+        {
+            "content": "Blabalab",
+            "id": "23d8869d-2139-4ecb-9fb5-bcc7746142fd"
+        },
+        {
+            "content": "Esto es una prueba",
+            "owner": "La LC de Baca",
+            "id": "56a6cef4-06d3-49dd-abd7-cdd043cf7286"
+        }
+    ],
+    "users": []
 }

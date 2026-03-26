@@ -2,6 +2,7 @@ import debug from 'debug';
 import { Router } from 'express';
 import { NotesRepoJson } from '../services/notes-repo-json.ts';
 import { join, resolve } from 'node:path';
+import { NoteSchemaDTO } from '../schemas/note.ts';
 
 const log = debug('Express-App:router:notes');
 
@@ -35,14 +36,16 @@ router.get('/:id', async (req, res) => {
   return;
 });
 
-router.post('/', (req, res) => {
-  res.statusCode = 201;
-  const result = {
-    ...req.body,
-    id: crypto.randomUUID(),
-  };
-  res.json(result);
-  return;
+router.post('/', async (req, res, next) => {
+  try {
+    const data = NoteSchemaDTO.parse(req.body);
+    const result = await repo.create(data);
+    res.statusCode = 201;
+    res.json(result);
+    return;
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.patch('/:id', (req, res) => {
