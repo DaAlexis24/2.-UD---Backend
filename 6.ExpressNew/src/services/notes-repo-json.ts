@@ -1,14 +1,19 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import type { Note, NoteDTO } from '../schemas/note.ts';
 import type { Repository } from '../types/repo.ts';
+import { config } from '../config/config.ts';
+import debug from 'debug';
+
+const log = debug('NewExpress:repo:notes');
 
 export class NotesRepoJson implements Repository<Note> {
   #notes: Note[] = [];
   #file: string;
   #collection: string;
 
-  constructor(file: string, collection = 'notes') {
-    this.#file = file;
+  constructor(collection = 'notes') {
+    log('Notes created');
+    this.#file = config();
     this.#collection = collection;
   }
 

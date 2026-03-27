@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { NoteSchemaDTO, type Note } from '../schemas/note.ts';
+import { NoteSchemaDTO, type Note, type NoteUpdate } from '../schemas/note.ts';
 import debug from 'debug';
 import type { Repository } from '../types/repo.ts';
 import type { NotesRepoJson } from '../services/notes-repo-json.ts';
@@ -31,7 +31,7 @@ export class NotesController {
   }
 
   // Método con Arrow Function, no requiere que se realize un bind en el router que obtendrá los controladores
-  getById = async (req: Request, res: Response) => {
+  getById = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
       const note = await this.repo.readById(id as string);
@@ -44,7 +44,7 @@ export class NotesController {
         (error as Error).message,
       );
       finalError.cause = error;
-      throw finalError;
+      next(finalError);
     }
   };
 
@@ -62,9 +62,12 @@ export class NotesController {
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    const data = NoteSchemaDTO.partial().parse(req.body);
     try {
-      const data = req.body;
-      const result = await this.repo.updateById(id as string, data);
+      const result = await this.repo.updateById(
+        id as string,
+        data as NoteUpdate,
+      );
       log(id);
       res.json(result);
       return;
@@ -86,13 +89,23 @@ export class NotesController {
     return;
   };
 
-  delete = (req: Request, res: Response) => {
-    const { id } = req.params;
-    this.repo.deleteById(id as string);
-    log(id);
-    res.statusCode = 204;
-    res.statusMessage = 'No Content';
-    res.end();
-    return;
+  delete = (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      this.repo.deleteById(id as string);
+      log(id);
+      res.statusCode = 204;
+      res.statusMessage = 'No Content';
+      res.end();
+      return;
+    } catch (error) {
+      const finalError = new HttpError(
+        404,
+        'Not Found',
+        (error as Error).message,
+      );
+      finalError.cause = error;
+      next(finalError);
+    }
   };
 }
