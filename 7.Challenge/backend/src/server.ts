@@ -1,10 +1,12 @@
 import { app } from './app.ts';
 import { createServer } from 'node:http';
+import { env } from './models/env.ts';
 import debug from 'debug';
 
-const log = debug('DS-CRM:index');
+const moduleName = env.DEBUG.slice(0, -1);
+const log = debug(`${moduleName}:server`);
 
-export const PORT = process.env.PORT || 3000;
+export const PORT = env.PORT || 3000;
 
 export const server = createServer(app);
 log('Server raised');
@@ -23,7 +25,7 @@ export const listenManager = () => {
         : `${addr.address}:${addr.port}`;
   }
 
-  if (process.env.NODE_ENV !== 'dev') {
+  if (env.NODE_ENV !== 'dev') {
     console.log(`Server listening on ${bind}`);
   } else {
     log(`Server listening on ${bind}`);
