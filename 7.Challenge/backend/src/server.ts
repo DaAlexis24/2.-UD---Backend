@@ -1,6 +1,7 @@
 import { app } from './app.ts';
-import { createServer } from 'node:http';
+import { createServer, ServerResponse } from 'node:http';
 import { env } from './models/env.ts';
+import { HttpError } from './errors/http-errors.ts';
 import debug from 'debug';
 
 const moduleName = env.DEBUG.slice(0, -1);
@@ -31,3 +32,25 @@ export const listenManager = () => {
     log(`Server listening on ${bind}`);
   }
 };
+
+const errorManager = (error: HttpError, response: ServerResponse) => {
+  if (!('statusCode' in error)) {
+    error = {
+      ...new Error('Internal Server Error'),
+      status: 500,
+      statusMessage: 'Internal Server Error',
+    };
+  }
+
+  const errorInfo = `Error ${error.status}: ${error.statusMessage}`;
+  response.statusCode = error.status;
+  response.statusMessage = error.statusMessage;
+  log(errorInfo, error.message);
+  response.end(errorInfo);
+};
+
+export function setServer() {
+  server.on('listening', listenManager);
+  server.on('error', errorManager);
+  server.listen(PORT);
+}
