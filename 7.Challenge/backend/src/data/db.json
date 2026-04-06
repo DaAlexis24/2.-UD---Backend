@@ -18,11 +18,19 @@
         },
         {
             "productName": "Fideos COMO 500gr",
-            "description": "Fideos realizados a mano, edición limitada solo para los amantes de la buena comida italiana",
+            "description": "Fideos realizados a mano, edición limitada solo para los amantes de la buena comida italiana. Especiales para tí",
             "category": "Abarrotes",
             "price": 4,
             "image": "fideos-como-500-gr.jpg",
             "id": "1feea4da-694c-4948-8acd-6ee7408206a6"
+        },
+        {
+            "productName": "Tomates Pera MiGranada 500gr.",
+            "description": "Empaque de tomates 100% andaluces, esplendidos. Apoya la industria nacional",
+            "category": "Verduras",
+            "price": 2.5,
+            "image": "tomates-migranada-500-gr.jpg",
+            "id": "441b765d-6dc7-42ee-9452-4a5cdbf26a82"
         }
     ]
 }
