@@ -5,6 +5,7 @@ import cors from 'cors';
 import { env } from './models/env.ts';
 import { customHeaders } from './middlewares/custom.ts';
 import { errorHandler } from './middlewares/error-handler.ts';
+import productRouter from './routes/products.ts';
 
 const moduleName = env.DEBUG.slice(0, -1);
 const log = debug(`${moduleName}:app`);
@@ -28,6 +29,17 @@ app.use(express.static('public'));
 // GET sample
 app.get('/api', (_req, res) => {
   res.send('Create API REST');
+  return;
+});
+
+app.use('/api/products', productRouter);
+
+app.use((_req, res) => {
+  res.statusCode = 404;
+  res.statusMessage = 'Not Found';
+  res.json({
+    message: 'Resource Not Found',
+  });
   return;
 });
 
