@@ -24,7 +24,7 @@ app.use(cors({ origin: '*' }));
 // Definimos acá el tipo de archivo donde vamos a guardar los datos
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.static('public'));
+app.use(express.static('./public'));
 
 // GET sample
 app.get('/api', (_req, res) => {
