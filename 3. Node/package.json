@@ -8,8 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=prod node ./src/cli-demo.ts",
-    "dev": "cross-env NODE_ENV=dev node --env-file=.env ./src/cli-demo.ts"
+    "start": "cross-env NODE_ENV=prod node ./src/01-Base/01_cli-demo.ts",
+    "dev": "cross-env NODE_ENV=dev node --env-file=.env ./src/01-Base/01_cli-demo.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -20,6 +20,7 @@
     "eslint": "^10.0.3",
     "globals": "^17.4.0",
     "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.0"
   },
