@@ -1,14 +1,21 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import type { Product, ProductDTO } from '../models/product.ts';
 import type { Repository } from '../types/repo.ts';
+import { env } from '../models/env.ts';
+import debug from 'debug';
+import { configDB } from '../config/configDB.ts';
+
+const moduleName = env.DEBUG.slice(0, -1);
+const log = debug(`${moduleName}:repo:products`);
 
 export class ProductsRepoJson implements Repository<Product> {
   #product: Product[] = [];
   #file: string;
   #collection: string;
 
-  constructor(file: string, collection = 'products') {
-    this.#file = file;
+  constructor(collection = 'products') {
+    log('ProductsRepoJSON created');
+    this.#file = configDB();
     this.#collection = collection;
   }
 

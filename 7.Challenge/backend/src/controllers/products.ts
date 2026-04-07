@@ -1,17 +1,15 @@
-import { ProductSchemaDTO } from '../models/product.ts';
-import { HttpError } from '../errors/http-errors.ts';
-import { env } from '../models/env.ts';
 import type { NextFunction, Request, Response } from 'express';
-import type { Product } from '../models/product.ts';
-import type { Repository } from '../types/repo.ts';
 import type { ProductsRepoJson } from '../services/products-repo-json.ts';
+import { ProductSchemaDTO } from '../models/product.ts';
+import { env } from '../models/env.ts';
 import debug from 'debug';
+import { HttpError } from '../errors/http-errors.ts';
 
 const moduleName = env.DEBUG.slice(0, -1);
 const log = debug(`${moduleName}:controller:products`);
 
 export class ProductController {
-  repo: Repository<Product>;
+  repo: ProductsRepoJson;
 
   constructor(repo: ProductsRepoJson) {
     this.repo = repo;

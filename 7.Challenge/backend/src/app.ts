@@ -6,6 +6,9 @@ import { env } from './models/env.ts';
 import { customHeaders } from './middlewares/custom.ts';
 import { errorHandler } from './middlewares/error-handler.ts';
 import productRouter from './routes/products.ts';
+import { HomeView } from './views/index.ts';
+import { ProductsRepoJson } from './services/products-repo-json.ts';
+import { ProductController } from './controllers/products.ts';
 
 const moduleName = env.DEBUG.slice(0, -1);
 const log = debug(`${moduleName}:app`);
@@ -26,13 +29,20 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static('./public'));
 
+const repo = new ProductsRepoJson();
+const controller = new ProductController(repo);
+
 // GET sample
 app.get('/api', (_req, res) => {
   res.send('Create API REST');
   return;
 });
 
-app.use('/api/products', productRouter);
+app.use('/api/products', productRouter(controller));
+
+app.use('/', (_req, res) => {
+  res.send(HomeView.render());
+});
 
 app.use((_req, res) => {
   res.statusCode = 404;
