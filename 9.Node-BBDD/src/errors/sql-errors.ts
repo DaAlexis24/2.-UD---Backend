@@ -5,18 +5,17 @@ type SqlErrorOptions = {
   sqlState?: string;
 } & ErrorOptions;
 
-export class SQLError extends Error {
-  code?: string;
-  sqlMessage?: string;
-  sqlState?: string;
+export class SqlError extends Error {
+  code: string;
+  sqlMessage: string;
+  sqlState: string;
   errno: number;
-  constructor(
-    message?: string | undefined,
-    options?: SqlErrorOptions | undefined,
-  ) {
+  constructor(message: string | undefined, options?: SqlErrorOptions) {
     super(message, options);
-    this.code = options?.code;
-    this.statusMessage = statusMessage || '';
-    console.log();
+    this.name = 'SqlError';
+    this.code = options?.code || '';
+    this.errno = options?.errno || 0;
+    this.sqlMessage = options?.sqlMessage || '';
+    this.sqlState = options?.sqlState || '';
   }
 }
