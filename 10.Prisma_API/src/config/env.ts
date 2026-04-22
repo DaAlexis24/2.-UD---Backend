@@ -1,5 +1,5 @@
-import * as z from 'zod';
-import { ZodError } from 'zod';
+import * as z from "zod";
+import { ZodError } from "zod";
 import debug from 'debug';
 
 export const EnvSchema = z.object({
@@ -12,17 +12,16 @@ export const EnvSchema = z.object({
   PGHOST: z.string(),
   PGPORT: z.coerce.number(),
   PGDATABASE: z.string(),
-  PGURL: z.url(),
 });
 
-export type Env = z.infer<typeof EnvSchema>;
+export type Env = z.infer<typeof EnvSchema>
 
-export let env: Env;
+export let env: Env
 try {
-  env = EnvSchema.parse(process.env);
-  const log = debug(`${env.PROJECT_NAME}:env`);
-  log('Loading environment variables.');
+    env = EnvSchema.parse(process.env) 
+    const log = debug(`${env.PROJECT_NAME}:env`);
+    log("Loading environment variables.");
 } catch (error) {
-  console.log(error as ZodError);
-  process.exit(1);
+    console.log(error as ZodError)
+    process.exit(1)
 }
