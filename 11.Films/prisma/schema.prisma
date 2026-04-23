@@ -11,3 +11,63 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id         Int      @id @default(autoincrement()) @map("user_id")
+  email      String   @unique @db.VarChar(100)
+  password   String   @db.VarChar(24)
+  profile    Profile?
+  reviews    Review[]
+  created_at DateTime @default(now()) @ignore
+
+  @@map("users")
+}
+
+model Profile {
+  id         Int      @id @default(autoincrement()) @map("profile_id")
+  firstName  String   @db.VarChar(100)
+  surName    String   @db.VarChar(100)
+  avatar     String   @db.VarChar(200)
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int      @unique
+  created_at DateTime @default(now()) @ignore
+
+  @@map("profiles")
+}
+
+model Movie {
+  id         Int      @id @default(autoincrement()) @map("movie_id")
+  title      String   @db.VarChar(255)
+  year       Int      @map("release_year")
+  director   String   @db.VarChar(255)
+  duration   Int
+  poster     String?  @db.Text
+  rate       Decimal  @db.Decimal(2, 1)
+  genres     Genre[]
+  reviews    Review[]
+  created_at DateTime @default(now()) @ignore
+
+  @@map("movies")
+}
+
+model Genre {
+  id         Int      @id @default(autoincrement()) @map("genre_id")
+  name       String   @db.VarChar(100)
+  movies     Movie[]
+  created_at DateTime @default(now()) @ignore
+
+  @@map("genres")
+}
+
+model Review {
+  userId  Int    @map("user_id")
+  movieId Int    @map("movie_id")
+  text    String @db.VarChar(500)
+  user    User   @relation(fields: [userId], references: [id])
+  movie   Movie  @relation(fields: [movieId], references: [id])
+  created DateTime @default(now()) @map("created_at")
+
+
+  @@id([userId, movieId])
+  @@map("reviews")
+}

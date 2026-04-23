@@ -3,20 +3,20 @@ import { env } from '../config/env.ts';
 import debug from 'debug';
 import { readFile } from 'fs/promises';
 import { marked } from 'marked';
-import matter from "gray-matter";
+import matter from 'gray-matter';
 
 const log = debug(`${env.PROJECT_NAME}:home-view`);
 
 log('Loading home view class...');
 
 const readme = await readFile('./README.md', 'utf-8');
-const { data, content } = matter(readme);
+const { content } = matter(readme);
 const html = marked.parse(content);
 const title = env.PROJECT_NAME || 'Home';
 
 export class HomeView {
-    static render = () => {
-        const template = /*html*/ `
+  static render = () => {
+    const template = /*html*/ `
         <!doctype html>
         <html lang="en">
         <head>
@@ -28,7 +28,7 @@ export class HomeView {
         </head>
         <body>
             <header class="header">
-                <h1>${data.title}</h1>
+                <h1>API Information</h1>
             </header>
             <main>
                 <section>
@@ -41,7 +41,7 @@ export class HomeView {
         </body>
         </html>
         `;
-        log('Rendering home view template...');
-        return template;
-    };
+    log('Rendering home view template...');
+    return template;
+  };
 }
