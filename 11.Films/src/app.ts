@@ -8,10 +8,13 @@ import { customHeaders } from './middleware/customs.ts';
 import { HomeView } from './views/home.ts';
 import { HttpError } from './errors/http-error.ts';
 import { errorHandler } from './middleware/error-handler.ts';
-import type { PrismaClient } from '../generated/prisma/client.ts';
+import type { AppPrismaClient } from './config/db-config.ts';
+import { UsersRepo } from './users/repo/users.repo.ts';
+import { UsersController } from './users/controllers/users.controller.ts';
+import { UsersRouter } from './users/router/users.route.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createApp = (prisma: PrismaClient) => {
+export const createApp = (prisma: AppPrismaClient) => {
   const log = debug(`${env.PROJECT_NAME}:app`);
   log('Starting Express app...');
   const app = express();
@@ -45,6 +48,10 @@ export const createApp = (prisma: PrismaClient) => {
     log('Received request to root endpoint');
     return res.send(HomeView.render());
   });
+
+  const appRepo = new UsersRepo(prisma);
+  const appController = new UsersController(appRepo);
+  const appRouter = new UsersRouter(appController);
 
   // app.use('/api/animals', animalRouter(pool));
 
