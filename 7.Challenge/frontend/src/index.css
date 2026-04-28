@@ -1,0 +1,171 @@
+:root {
+  --blue: #0056d2;
+  --blue-accent: #5ca0ff;
+  --violet: #6376a9;
+  --brown: #a93802;
+  --red: #ff0000;
+  --black: #0f1115;
+  --white: #f8f9fa;
+  --dark-gray: #a9a9a9;
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  /* Paleta colores: Theme Light */
+  --color-back: var(--white);
+  --color-font: var(--black);
+
+  --primary-color: var(--blue);
+  --secondary-color: var(--violet);
+  --tertiary-color: var(--brown);
+  --accent-color: var(--blue-accent);
+  --accent-font-color: var(--blue);
+  --error-color: var(--red);
+  --error-font-color: var(--white);
+  --social-icon: var(--violet);
+
+  /* Fonts */
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Be Vietnam Pro', Roboto, sans-serif;
+  --label: system-ui, 'Domine', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  /* Escala */
+  --scala: 1.2;
+  --base: 1rem;
+
+  --size-x-large: calc(var(--size-large) * var(--scala));
+  --size-large: calc(var(--size-medium) * var(--scala));
+  --size-medium: calc(var(--size-normal) * var(--scala));
+  --size-normal: var(--base);
+  --size-small: calc(var(--size-normal) / var(--scala));
+  --size-x-small: calc(var(--size-small) / var(--scala));
+
+  /* Bordes*/
+  --border-radius: 0.5rem;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow-wrap: break-word;
+  }
+
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
+  }
+
+  /* Aplicación de la escala a los títulos y texto */
+
+  h1,
+  .h1,
+  h2,
+  .h2,
+  h3,
+  .h3 {
+    line-height: 1;
+    margin-block: 1rem;
+  }
+
+  h1,
+  .h1,
+  .x-large {
+    font-size: var(--size-x-large);
+  }
+  h1,
+  .h1 {
+    font-family: var(--font-title);
+  }
+
+  h2,
+  .h2,
+  .large {
+    font-size: var(--size-large);
+  }
+  h3,
+  .h3,
+  .medium {
+    font-size: var(--size-medium);
+  }
+  h4,
+  .h4,
+  .normal {
+    font-size: var(--size-normal);
+  }
+  h5,
+  .h5 {
+    font-size: var(--size-small);
+  }
+  h6,
+  .h6 {
+    font-size: var(--size-x-small);
+  }
+
+  .scale2 {
+    --scala: 1.5;
+    --base: 1rem;
+
+    --size-x-large: calc(var(--size-large) * var(--scala));
+    --size-large: calc(var(--size-medium) * var(--scala));
+    --size-medium: calc(var(--size-normal) * var(--scala));
+    --size-normal: var(--base);
+    --size-small: calc(var(--size-normal) / var(--scala));
+    --size-x-small: calc(var(--size-small) / var(--scala));
+  }
+}
