@@ -1,0 +1,35 @@
+{
+  "name": "NodeBBDD",
+  "version": "1.0.0",
+  "description": "Backend for products",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "cross-env NODE_ENV=prod node ./src/index.ts",
+    "dev": "node --watch --env-file=.env ./src/index.ts",
+    "test": "node --env-file=.env.test --test",
+    "test:serie": "node --env-file=.env.test --test --test-concurrency=1"
+  },
+  "author": "DanielSoledad",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/debug": "^4.1.13",
+    "@types/node": "^25.5.2",
+    "@types/pg": "^8.20.0",
+    "eslint": "^9.39.4",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "debug": "^4.4.3",
+    "pg": "^8.20.0",
+    "zod": "^4.3.6"
+  },
+  "prettier": {
+    "singleQuote": true
+  }
+}
