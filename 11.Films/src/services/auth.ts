@@ -9,26 +9,25 @@ log('Loading Auth Service ...');
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AuthService {
-  static saltRounds = env.SALT_ROUNDS;
+  static saltRounds = 12;
 
-  static hash(text: string): Promise<string> {
-    return hash(text, this.saltRounds as number);
+  static hash(password: string): Promise<string> {
+    return hash(password, this.saltRounds);
   }
 
-  static compare(pswd: string, hash: string): Promise<boolean> {
-    return compare(pswd, hash);
+  static compare(password: string, hash: string): Promise<boolean> {
+    return compare(password, hash);
   }
 
   static generateToken(payload: TokenPayload): string {
-    return jwt.sign(payload, env.JWT_SECRET);
+    return jwt.sign(
+      payload,
+      env.JWT_SECRET,
+      //{ expiresIn: '1h' }
+    );
   }
 
-  static verifyToken(token: string): TokenPayload | null {
-    try {
-      return jwt.verify(token, env.JWT_SECRET) as TokenPayload;
-    } catch (error) {
-      log('Invalid token:', error);
-      return null;
-    }
+  static verifyToken(token: string): TokenPayload {
+    return jwt.verify(token, env.JWT_SECRET) as TokenPayload;
   }
 }

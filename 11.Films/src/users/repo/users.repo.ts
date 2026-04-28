@@ -1,4 +1,5 @@
-import type { PrismaClient } from '../../../generated/prisma/client.ts';
+import { Role } from '../../../generated/prisma/enums.ts';
+import type { AppPrismaClient } from '../../config/db-config.ts';
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import { AuthService } from '../../services/auth.ts';
@@ -11,25 +12,25 @@ import type {
 } from '../../zod/user.schema.ts';
 import type { LoginResult, TokenPayload } from '../../types/login.ts';
 import { PrismaClientKnownRequestError } from '../../../generated/prisma/internal/prismaNamespace.ts';
-// import { HttpError } from '../errors/http-error.ts';
 
 const log = debug(`${env.PROJECT_NAME}:repo:users`);
 log('Loading Users Controller ...');
 
 export class UsersRepo {
-  #prisma: PrismaClient;
+  #prisma: AppPrismaClient;
   // responsable de la inyección de dependencias,
-  constructor(prisma: PrismaClient) {
+  constructor(prisma: AppPrismaClient) {
     this.#prisma = prisma;
   }
 
-  async register(userData: RegisterUserData) {
-    log('Register user with email %s', userData.email);
+  async register(userData: RegisterUserData): Promise<User> {
+    log('Registering user with email %s', userData.email);
     const hashedPassword = await AuthService.hash(userData.password);
     const result = await this.#prisma.user.create({
       data: {
         email: userData.email,
         password: hashedPassword,
+        role: Role.USER,
         profile: {
           create: userData.profile,
         },
@@ -38,16 +39,11 @@ export class UsersRepo {
         profile: true,
       },
     });
-    return result;
-  }
 
+    return result as User;
+  }
   async login(userData: LoginUserData): Promise<LoginResult> {
     log('Logging in user with email %s', userData.email);
-    // const loginError = new HttpError(
-    //   401,
-    //   'Unauthorized',
-    //   'Invalid User or Password',
-    // );
     const result = await this.#prisma.user.findUnique({
       where: {
         email: userData.email,
@@ -93,7 +89,11 @@ export class UsersRepo {
     log('Getting all users');
     return this.#prisma.user.findMany({
       include: {
-        profile: true,
+        profile: {
+          omit: {
+            id: true,
+          },
+        },
       },
     }) as Promise<User[]>;
   }
@@ -105,7 +105,11 @@ export class UsersRepo {
         id,
       },
       include: {
-        profile: true,
+        profile: {
+          omit: {
+            id: true,
+          },
+        },
       },
     }) as Promise<User>;
   }
@@ -152,7 +156,7 @@ export class UsersRepo {
     log('Deleting user with id %d', id);
     return this.#prisma.user.delete({
       where: {
-        id,
+        id: id,
       },
     }) as Promise<User>;
   }

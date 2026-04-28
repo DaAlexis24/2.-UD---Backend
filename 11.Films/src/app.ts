@@ -3,7 +3,6 @@ import debug from 'debug';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-
 import { customHeaders } from './middleware/customs.ts';
 import { HomeView } from './views/home.ts';
 import { HttpError } from './errors/http-error.ts';
@@ -13,7 +12,6 @@ import { UsersRepo } from './users/repo/users.repo.ts';
 import { UsersController } from './users/controllers/users.controller.ts';
 import { UsersRouter } from './users/router/users.route.ts';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createApp = (prisma: AppPrismaClient) => {
   const log = debug(`${env.PROJECT_NAME}:app`);
   log('Starting Express app...');
@@ -44,7 +42,7 @@ export const createApp = (prisma: AppPrismaClient) => {
     return res.send(HomeView.render());
   });
 
-  app.get('/api', async (_req, res) => {
+  app.get('/api', (_req, res) => {
     log('Received request to root endpoint');
     return res.send(HomeView.render());
   });
@@ -52,6 +50,7 @@ export const createApp = (prisma: AppPrismaClient) => {
   const appRepo = new UsersRepo(prisma);
   const appController = new UsersController(appRepo);
   const appRouter = new UsersRouter(appController);
+  app.use('/api/users', appRouter.router);
 
   // app.use('/api/animals', animalRouter(pool));
 
