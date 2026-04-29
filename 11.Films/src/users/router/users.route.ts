@@ -24,7 +24,6 @@ export class UsersRouter {
     this.#authInterceptor = authInterceptor;
 
     // Define routes and bind them to controller methods
-    // For example:
     this.#router.post(
       '/register',
       validateBody(RegisterUserDTOSchema),

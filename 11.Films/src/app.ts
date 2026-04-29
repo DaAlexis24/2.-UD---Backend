@@ -62,8 +62,6 @@ export const createApp = (prisma: AppPrismaClient) => {
   const appRouter = new UsersRouter(appController, authInterceptor);
   app.use('/api/users', appRouter.router);
 
-  // app.use('/api/animals', animalRouter(pool));
-
   app.use((_req, _res, next) => {
     log('Calling errorHandler for 404 error');
     const error = new HttpError(404, 'Not Found', 'Resource not found');
