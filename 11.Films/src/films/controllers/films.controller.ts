@@ -15,7 +15,7 @@ const internalError = new HttpError(
   'An unexpected error occurred while processing the request',
 );
 
-const notFoundError = new HttpError(404, 'Not Found', 'User not found');
+const notFoundError = new HttpError(404, 'Not Found', 'Film not found');
 
 export class FilmsController {
   #repo: FilmsRepo;
