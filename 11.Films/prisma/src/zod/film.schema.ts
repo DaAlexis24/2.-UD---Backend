@@ -50,7 +50,7 @@ export const FilmModelSchema = z.object({
   duration: z.number(),
   poster: z.string().nullable(),
   rate: z.instanceof(Decimal),
-  genres: z.array(GenreModelSchema.omit({ id: true })).optional(),
+  genres: z.array(GenreModelSchema).optional(),
   reviews: z.array(ReviewModelSchema).optional(),
 });
 
@@ -123,7 +123,7 @@ export const ReviewParamsSchema = z.object({
 type GenreModelShape = GenreModel;
 
 type FilmModelShape = FilmModel & {
-  genres?: Omit<GenreModel, 'id'>[];
+  genres?: GenreModel[];
   reviews?: ReviewModel[];
 };
 
