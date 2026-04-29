@@ -75,7 +75,7 @@ export const FilmCreateDTOSchema = z.object({
     }),
 });
 
-export const FilmUpdateDTOSchema = FilmCreateDTOSchema.partial();
+export const FilmUpdateDTOSchema = FilmCreateDTOSchema.partial().strict();
 
 export const FilmParamsSchema = z.object({
   id: z.coerce.number().int().positive(),

@@ -14,6 +14,9 @@ import { UsersRouter } from './users/router/users.route.ts';
 
 import type { TokenPayload } from './types/login.ts';
 import { AuthInterceptor } from './middleware/auth.interceptor.ts';
+import { FilmsRepo } from './films/repo/films.repo.ts';
+import { FilmsController } from './films/controllers/films.controller.ts';
+import { FilmsRouter } from './films/router/films.routes.ts';
 
 declare module 'express' {
   interface Request {
@@ -56,11 +59,17 @@ export const createApp = (prisma: AppPrismaClient) => {
     return res.send(HomeView.render());
   });
 
-  const appRepo = new UsersRepo(prisma);
   const authInterceptor = new AuthInterceptor();
+
+  const appRepo = new UsersRepo(prisma);
   const appController = new UsersController(appRepo);
   const appRouter = new UsersRouter(appController, authInterceptor);
   app.use('/api/users', appRouter.router);
+
+  const filmsRepo = new FilmsRepo(prisma);
+  const filmsController = new FilmsController(filmsRepo);
+  const filmsRouter = new FilmsRouter(filmsController, authInterceptor);
+  app.use('/api/films', filmsRouter.router);
 
   app.use((_req, _res, next) => {
     log('Calling errorHandler for 404 error');

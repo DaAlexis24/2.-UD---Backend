@@ -1,4 +1,4 @@
-import { env } from '../../config/env';
+import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { AppPrismaClient } from '../../config/db-config';
 import type { Film, FilmCreateDTO, FilmUpdateDTO } from '../../zod/film.schema';
