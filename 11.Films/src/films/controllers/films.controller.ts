@@ -38,11 +38,11 @@ export class FilmsController {
   async getFilmById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = Number(req.params.id); // Validate this data in a real application
-      log('Get User: %O', id);
+      log('Get Film: %O', id);
       const film: Film = await this.#repo.getFilmById(id);
       return res.json(film);
     } catch (error) {
-      log('Error getting user by id: %O', error);
+      log('Error getting film by id: %O', error);
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
@@ -77,7 +77,7 @@ export class FilmsController {
       const film: Film = await this.#repo.updateFilm(id, filmData);
       return res.json(film);
     } catch (error) {
-      log('Error getting user by id: %O', error);
+      log('Error getting film by id: %O', error);
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
@@ -98,7 +98,7 @@ export class FilmsController {
       await this.#repo.deleteFilm(id);
       return res.status(204).end();
     } catch (error) {
-      log('Error getting user by id: %O', error);
+      log('Error getting film by id: %O', error);
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
