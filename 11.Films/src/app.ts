@@ -4,13 +4,22 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { customHeaders } from './middleware/customs.ts';
-import { HomeView } from './views/home.ts';
 import { HttpError } from './errors/http-error.ts';
 import { errorHandler } from './middleware/error-handler.ts';
+import { HomeView } from './views/home.ts';
 import type { AppPrismaClient } from './config/db-config.ts';
 import { UsersRepo } from './users/repo/users.repo.ts';
 import { UsersController } from './users/controllers/users.controller.ts';
 import { UsersRouter } from './users/router/users.route.ts';
+
+import type { TokenPayload } from './types/login.ts';
+import { AuthInterceptor } from './middleware/auth.interceptor.ts';
+
+declare module 'express' {
+  interface Request {
+    user?: TokenPayload;
+  }
+}
 
 export const createApp = (prisma: AppPrismaClient) => {
   const log = debug(`${env.PROJECT_NAME}:app`);
@@ -48,8 +57,9 @@ export const createApp = (prisma: AppPrismaClient) => {
   });
 
   const appRepo = new UsersRepo(prisma);
+  const authInterceptor = new AuthInterceptor();
   const appController = new UsersController(appRepo);
-  const appRouter = new UsersRouter(appController);
+  const appRouter = new UsersRouter(appController, authInterceptor);
   app.use('/api/users', appRouter.router);
 
   // app.use('/api/animals', animalRouter(pool));

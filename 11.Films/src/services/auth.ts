@@ -5,7 +5,7 @@ import debug from 'debug';
 import type { TokenPayload } from '../types/login.ts';
 
 const log = debug(`${env.PROJECT_NAME}:service:auth`);
-log('Loading Auth Service ...');
+log('Loading auth service...');
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AuthService {
