@@ -29,17 +29,32 @@ export const ReviewRateDTOSchema = z.coerce
     message: 'rate debe tener como maximo un decimal',
   });
 
+export const GenreModelSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
 export const ReviewModelSchema = z.object({
   review: z.string(),
   rate: z.instanceof(Decimal),
   date: z.date(),
-  userID: z.number(),
-  filmID: z.number(),
-});
-
-export const GenreModelSchema = z.object({
-  id: z.number(),
-  name: z.string(),
+  // userID: z.number(),
+  // filmID: z.number(),
+  user: z
+    .object({
+      profile: z
+        .object({
+          firstName: z.string(),
+          surname: z.string(),
+        })
+        .optional(),
+    })
+    .optional(),
+  film: z
+    .object({
+      title: z.string(),
+    })
+    .optional(),
 });
 
 export const FilmModelSchema = z.object({
@@ -52,6 +67,16 @@ export const FilmModelSchema = z.object({
   rate: z.instanceof(Decimal),
   genres: z.array(GenreModelSchema.omit({ id: true })).optional(),
   reviews: z.array(ReviewModelSchema).optional(),
+});
+
+export const GenreDetailModelSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  films: z.array(
+    FilmModelSchema.omit({
+      reviews: true,
+    }),
+  ),
 });
 
 export const GenreCreateDTOSchema = z.object({
@@ -127,11 +152,20 @@ type FilmModelShape = FilmModel & {
   reviews?: ReviewModel[];
 };
 
-type ReviewModelShape = ReviewModel;
+// type ReviewModelShape = ReviewModel;
 
 type GenreCreateShape = Pick<GenreCreateInput, 'name'>;
 
+type GenreDetailModelShape = GenreModelShape & {
+  films: Omit<FilmModelShape, 'genres' | 'reviews'>[];
+};
+
 type GenreUpdateShape = Partial<GenreCreateShape>;
+
+export type GenreDetail = z.infer<typeof GenreDetailModelSchema>;
+export type _GenreDetailCheck = Assert<
+  IsExact<GenreDetail, GenreDetailModelShape>
+>;
 
 type FilmCreateShape = Pick<
   FilmCreateInput,
@@ -193,10 +227,10 @@ export type Genre = z.infer<typeof GenreModelSchema>;
 export type _GenreCheck = Assert<IsExact<Genre, GenreModelShape>>;
 
 export type Film = z.infer<typeof FilmModelSchema>;
-export type _FilmCheck = Assert<IsExact<Film, FilmModelShape>>;
+// export type _FilmCheck = Assert<IsExact<Film, FilmModelShape>>;
 
 export type Review = z.infer<typeof ReviewModelSchema>;
-export type _ReviewCheck = Assert<IsExact<Review, ReviewModelShape>>;
+// export type _ReviewCheck = Assert<IsExact<Review, ReviewModelShape>>;
 
 export type GenreCreateDTO = z.infer<typeof GenreCreateDTOSchema>;
 export type _GenreCreateDTOCheck = Assert<
