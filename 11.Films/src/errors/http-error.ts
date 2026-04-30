@@ -25,3 +25,18 @@ export class HttpError extends Error {
     );
   }
 }
+
+export class NotFoundError extends HttpError {
+  constructor(message: string, options?: ErrorOptions | undefined) {
+    super(500, 'Not Found', message, options);
+  }
+}
+
+export class InternalServerError extends HttpError {
+  constructor(
+    message = 'Internal Server Error',
+    options?: ErrorOptions | undefined,
+  ) {
+    super(500, 'Internal Server Error', message, options);
+  }
+}
