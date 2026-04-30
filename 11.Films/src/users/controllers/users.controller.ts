@@ -10,7 +10,7 @@ import type {
 } from '../../zod/user.schema.ts';
 import { HttpError } from '../../errors/http-error.ts';
 import type { LoginResult } from '../../types/login.ts';
-import { PrismaClientKnownRequestError } from '../../../generated/prisma/internal/prismaNamespace.ts';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 const log = debug(`${env.PROJECT_NAME}:controller:users`);
 log('Loading users controller...');
