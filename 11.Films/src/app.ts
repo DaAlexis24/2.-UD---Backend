@@ -17,6 +17,12 @@ import { AuthInterceptor } from './middleware/auth.interceptor.ts';
 import { FilmsRepo } from './films/repo/films.repo.ts';
 import { FilmsController } from './films/controllers/films.controller.ts';
 import { FilmsRouter } from './films/router/films.routes.ts';
+import { GenresRepo } from './genres/repo/genres.repo.ts';
+import { GenresController } from './genres/controllers/genres.controller.ts';
+import { GenresRouter } from './genres/router/genres.routes.ts';
+import { ReviewsRepo } from './reviews/repo/reviews.repo.ts';
+import { ReviewsController } from './reviews/controllers/reviews.controller.ts';
+import { ReviewsRouter } from './reviews/router/reviews.routes.ts';
 
 declare module 'express' {
   interface Request {
@@ -59,6 +65,7 @@ export const createApp = (prisma: AppPrismaClient) => {
     return res.send(HomeView.render());
   });
 
+  // Inicializamos los features
   const authInterceptor = new AuthInterceptor();
 
   const appRepo = new UsersRepo(prisma);
@@ -70,6 +77,16 @@ export const createApp = (prisma: AppPrismaClient) => {
   const filmsController = new FilmsController(filmsRepo);
   const filmsRouter = new FilmsRouter(filmsController, authInterceptor);
   app.use('/api/films', filmsRouter.router);
+
+  const genresRepo = new GenresRepo(prisma);
+  const genresController = new GenresController(genresRepo);
+  const genresRouter = new GenresRouter(genresController, authInterceptor);
+  app.use('/api/genres', genresRouter.router);
+
+  const reviewsRepo = new ReviewsRepo(prisma);
+  const reviewsController = new ReviewsController(reviewsRepo);
+  const reviewsRouter = new ReviewsRouter(reviewsController, authInterceptor);
+  app.use('/api/reviews', reviewsRouter.router);
 
   app.use((_req, _res, next) => {
     log('Calling errorHandler for 404 error');
