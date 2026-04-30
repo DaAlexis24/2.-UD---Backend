@@ -2,20 +2,16 @@ import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { FilmsRepo } from '../repo/films.repo.ts';
 import type { Request, Response, NextFunction } from 'express';
-import { HttpError } from '../../errors/http-error.ts';
 import type { Film, FilmUpdateDTO } from '../../zod/film.schema.ts';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { INTERNAL_ERROR, NOT_FOUND_ERROR } from '../../errors/basic-errors.ts';
 
 const log = debug(`${env.PROJECT_NAME}:controller:films`);
 log('Loading Films Controller...');
 
-const internalError = new HttpError(
-  500,
-  'Internal Server Error',
-  'An unexpected error occurred while processing the request',
-);
-
-const notFoundError = new HttpError(404, 'Not Found', 'Film not found');
+// Creamos una copia del objeto original para poderlo mutar. Buena práctica en JS
+const internalError = { ...INTERNAL_ERROR };
+const notFoundError = { ...NOT_FOUND_ERROR };
 
 export class FilmsController {
   #repo: FilmsRepo;
