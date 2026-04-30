@@ -25,11 +25,16 @@ API de películas, géneros, reviews y usuarios (perfil)
 - [PATCH] /api/user/:id (Owner)
 - [DELETE] /api/user/:id (Owner/Admin)
 
-- [GET] /api/reviews (User)
-- [GET] /api/reviews/:id (User)
-- [POST] /api/reviews (User)
-- [PATCH] /api/reviews/:id (Owner)
-- [DELETE] /api/reviews/:id (Owner/Admin)
+- [GET] /api/reviews/film/:filmId (User)
+- [GET] /api/reviews/user/:userId (User)
+- [GET] /api/reviews/:filmId/:userId (User)
+- [POST] /api/reviews/:filmId/ (Owner) => Token: userId
+- [PATCH] /api/reviews/:filmId/ (Owner) => Token: userId
+- [DELETE] /api/reviews/:filmId/ (Owner/Admin) => Token: userId
+
+Los Tokens tienen como desventaja su caducidad, aunque sea finita, permite que cualquiera que lo tenga haga lo que quieran.
+
+Como solución, se pueden usar las API KEYS, ya que se pueden cancelar
 
 ## Stack
 

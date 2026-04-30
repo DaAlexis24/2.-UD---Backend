@@ -49,3 +49,7 @@ Será el folder donde vamos a guardar todas las funciones y/o clases que nos per
 Acá vamos a crear el fichero de autenticación, donde vamos a hashear mediante promesas un texto, que dará vueltas la mayor cantidad de veces posible. Esto lo usaremos en el repositorio para proteger la contraseña que nos da el usuario en el método **register**.
 
 También crearemos un método para comparar las contraseñas que nos llegarán desde el lado del cliente con las que están encriptadas en la base de datos.
+
+## Problemas de Recursividad en los Tipos de Zod
+
+Usaremos el método LAZY
