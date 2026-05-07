@@ -32,6 +32,12 @@ export class BadRequestError extends HttpError {
   }
 }
 
+export class UnauthorizedError extends HttpError {
+  constructor(message: string, options?: ErrorOptions | undefined) {
+    super(401, 'Unauthorized', message, options);
+  }
+}
+
 export class NotFoundError extends HttpError {
   constructor(message: string, options?: ErrorOptions | undefined) {
     super(500, 'Not Found', message, options);
