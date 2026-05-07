@@ -26,6 +26,12 @@ export class HttpError extends Error {
   }
 }
 
+export class BadRequestError extends HttpError {
+  constructor(message = 'Bad Request', options?: ErrorOptions | undefined) {
+    super(400, 'Bad Request', message, options);
+  }
+}
+
 export class NotFoundError extends HttpError {
   constructor(message: string, options?: ErrorOptions | undefined) {
     super(500, 'Not Found', message, options);

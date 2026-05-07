@@ -2,16 +2,13 @@ import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { FilmsRepo } from '../repo/films.repo.ts';
 import type { Request, Response, NextFunction } from 'express';
-import type { Film, FilmUpdateDTO } from '../../zod/film.schema.ts';
+import type { Film } from '../entities/film.entity.ts';
+import type { FilmUpdateDTO } from '../entities/film.dto.ts';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
-import { INTERNAL_ERROR, NOT_FOUND_ERROR } from '../../errors/basic-errors.ts';
+import { NotFoundError, InternalServerError } from '../../errors/http-error.ts';
 
 const log = debug(`${env.PROJECT_NAME}:controller:films`);
 log('Loading Films Controller...');
-
-// Creamos una copia del objeto original para poderlo mutar. Buena práctica en JS
-const internalError = { ...INTERNAL_ERROR };
-const notFoundError = { ...NOT_FOUND_ERROR };
 
 export class FilmsController {
   #repo: FilmsRepo;
@@ -25,8 +22,10 @@ export class FilmsController {
       const films: Film[] = await this.#repo.getAllFilms();
       return res.json(films);
     } catch (error) {
-      internalError.cause = error;
-      log('Error when getting all films: %O', error);
+      const internalError = new InternalServerError('Failed to get all films', {
+        cause: error,
+      });
+      log('Error when getting all films: %O', internalError.message);
       return next(internalError);
     }
   }
@@ -43,11 +42,17 @@ export class FilmsController {
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
       ) {
-        notFoundError.cause = error;
-        notFoundError.message = 'Film Not Found';
+        const notFoundError = new NotFoundError('Film Requested not found', {
+          cause: error,
+        });
+        log('Error getting film by id: %s', notFoundError.message);
         return next(notFoundError);
       }
-      internalError.cause = error;
+      const internalError = new InternalServerError(
+        'Failed to get film by id',
+        { cause: error },
+      );
+      log('Error getting film by id: %s', internalError.message);
       return next(internalError);
     }
   }
@@ -59,8 +64,10 @@ export class FilmsController {
       const newFilm: Film = await this.#repo.createFilm(filmData);
       return res.status(201).json(newFilm);
     } catch (error) {
-      log('Error creating film: %O', error);
-      internalError.cause = error;
+      const internalError = new InternalServerError('Failed to create film', {
+        cause: error,
+      });
+      log('Error creating film by id: %s', internalError.message);
       return next(internalError);
     }
   }
@@ -78,11 +85,19 @@ export class FilmsController {
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
       ) {
-        notFoundError.cause = error;
-        notFoundError.message = 'Film Not Found';
+        const notFoundError = new NotFoundError('Film for update not found', {
+          cause: error,
+        });
+        log(
+          'Error because film for updating not found: %s',
+          notFoundError.message,
+        );
         return next(notFoundError);
       }
-      internalError.cause = error;
+      const internalError = new InternalServerError('Failed to update film', {
+        cause: error,
+      });
+      log('Error updating film: %s', internalError.message);
       return next(internalError);
     }
   }
@@ -99,11 +114,16 @@ export class FilmsController {
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
       ) {
-        notFoundError.cause = error;
-        notFoundError.message = 'Film Not Found';
+        const notFoundError = new NotFoundError('Film for deletion not found', {
+          cause: error,
+        });
+        log('Error deleting film: %s', notFoundError.message);
         return next(notFoundError);
       }
-      internalError.cause = error;
+      const internalError = new InternalServerError('Failed to delete film', {
+        cause: error,
+      });
+      log('Error deleting films: %s', internalError.message);
       return next(internalError);
     }
   }

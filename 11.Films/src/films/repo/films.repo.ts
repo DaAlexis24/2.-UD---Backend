@@ -1,7 +1,8 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { AppPrismaClient } from '../../config/db-config';
-import type { Film, FilmCreateDTO, FilmUpdateDTO } from '../../zod/film.schema';
+import type { Film } from '../entities/film.entity.ts';
+import type { FilmCreateDTO, FilmUpdateDTO } from '../entities/film.dto.ts';
 
 const log = debug(`${env.PROJECT_NAME}:repo:films`);
 log('Loading Films Repo');
