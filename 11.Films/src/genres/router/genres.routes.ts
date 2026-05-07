@@ -2,12 +2,9 @@ import { env } from '../../config/env.ts';
 import debug from 'debug';
 import { Router } from 'express';
 import type { GenresController } from '../controllers/genres.controller.ts';
-import { validateBody, validateId } from '../../middleware/validations.ts';
+import { validateBody, validateParams } from '../../middleware/validations.ts';
 import type { AuthInterceptor } from '../../middleware/auth.interceptor.ts';
-import {
-  GenreCreateDTOSchema,
-  GenreUpdateDTOSchema,
-} from '../../zod/film.schema.ts';
+import { GenreCreateDTOSchema } from '../entities/genre.dto.ts';
 
 const log = debug(`${env.PROJECT_NAME}:router:genres`);
 log('Loading Genres Router...');
@@ -26,7 +23,7 @@ export class GenresRouter {
     this.#router.get('/', this.#controller.getAllGenres.bind(this.#controller));
     this.#router.get(
       '/:id',
-      validateId(),
+      validateParams(),
       this.#controller.getGenreById.bind(this.#controller),
     );
     this.#router.post(
@@ -38,15 +35,15 @@ export class GenresRouter {
     );
     this.#router.put(
       '/:id',
-      validateId(),
-      validateBody(GenreUpdateDTOSchema),
+      validateParams(),
+      validateBody(GenreCreateDTOSchema),
       this.#authInterceptor.authenticate.bind(this.#authInterceptor),
       this.#authInterceptor.authorize(['EDITOR']).bind(this.#authInterceptor),
       this.#controller.updateGenre.bind(this.#controller),
     );
     this.#router.delete(
       '/:id',
-      validateId(),
+      validateParams(),
       this.#authInterceptor.authenticate.bind(this.#authInterceptor),
       this.#authInterceptor.authorize(['EDITOR']).bind(this.#authInterceptor),
       this.#controller.deleteGenre.bind(this.#controller),

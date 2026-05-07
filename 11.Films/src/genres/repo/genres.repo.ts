@@ -1,13 +1,8 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { AppPrismaClient } from '../../config/db-config';
-import type {
-  Genre,
-  GenreCreateDTO,
-  GenreDetail,
-  GenreUpdateDTO,
-} from '../../zod/film.schema.ts';
-
+import type { Genre, GenreDetail } from '../entities/genre.entity.ts';
+import type { GenreCreateDTO } from '../entities/genre.dto.ts';
 const log = debug(`${env.PROJECT_NAME}:repo:genres`);
 log('Loading Genres Repo');
 
@@ -51,14 +46,14 @@ export class GenresRepo {
     });
   }
 
-  async updateGenre(id: number, genreData: GenreUpdateDTO): Promise<Genre> {
-    log('Updating genre with id %d', id);
+  async updateGenre(id: number, name: GenreCreateDTO['name']): Promise<Genre> {
+    log('Updating genre with id %s', id);
     return await this.#prisma.genre.update({
       where: {
         id,
       },
       data: {
-        name: genreData.name,
+        name,
       },
     });
   }

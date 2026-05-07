@@ -1,13 +1,9 @@
 import { env } from '../../config/env.ts';
 import debug from 'debug';
 import type { GenresRepo } from '../repo/genres.repo.ts';
-import type { NextFunction, Request, Response } from 'express';
-import type {
-  Genre,
-  GenreDetail,
-  GenreUpdateDTO,
-} from '../../zod/film.schema.ts';
+import type { Request, Response, NextFunction } from 'express';
 import { InternalServerError, NotFoundError } from '../../errors/http-error.ts';
+import type { Genre, GenreDetail } from '../entities/genre.entity.ts';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 const log = debug(`${env.PROJECT_NAME}:controller:genres`);
@@ -77,23 +73,24 @@ export class GenresController {
 
   async updateGenre(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = Number(req.params.id); // Validate this data in a real application
-      log('Updating genre with ID: %O', id);
-      const genreData: GenreUpdateDTO = req.body; // Validate this data in a real application
-      const genre: Genre = await this.#repo.updateGenre(id, genreData);
+      const id = Number(req.params.id);
+      const name: string = req.body.name;
+      // Validated previously with zod middleware
+      log('Updating genre with ID: %s', id);
+      const genre: Genre = await this.#repo.updateGenre(id, name);
       return res.json(genre);
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
       ) {
-        const notFoundError = new NotFoundError('Genre Not Found', {
+        const notFoundError = new NotFoundError('Genre for update not found', {
           cause: error,
         });
-        log('Error updating genre by id: %s', notFoundError.message);
+        log('Error updating genre: %s', notFoundError.message);
         return next(notFoundError);
       }
-      const finalError = new InternalServerError('Error updating genre', {
+      const finalError = new InternalServerError('Failed to update genre', {
         cause: error,
       });
       log('Error updating genre: %s', finalError.message);
