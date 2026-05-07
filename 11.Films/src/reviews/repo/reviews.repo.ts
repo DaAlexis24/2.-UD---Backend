@@ -1,7 +1,11 @@
 import type { AppPrismaClient } from '../../config/db-config.ts';
 import { env } from '../../config/env.ts';
 import debug from 'debug';
-import type { ReviewCreateDTO } from '../../zod/film.schema.ts';
+import type {
+  ReviewCreateDTO,
+  ReviewParamsDTO,
+  ReviewUpdateDTO,
+} from '../../zod/film.schema.ts';
 
 const log = debug(`${env.PROJECT_NAME}:repo:reviews`);
 log('Loading Reviews Repo');
@@ -76,5 +80,11 @@ export class ReviewsRepo {
         userID: data.userID,
       },
     });
+  }
+
+  // [PATCH] /api/reviews/:filmId/ (Owner) => Token: userId
+  async updateReview(id: ReviewParamsDTO, data: ReviewUpdateDTO) {
+    log('Updating review for film %s by user %d', id.filmID, id.userID);
+    return await this.#prisma.review.update({});
   }
 }
